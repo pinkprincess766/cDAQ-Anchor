@@ -1,4 +1,4 @@
-"""Точка входа приложения ExcelProcessor."""
+"""Точка входа приложения Excel Pair Processor."""
 
 from __future__ import annotations
 

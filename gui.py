@@ -109,7 +109,7 @@ class App:
         self.cancel_event = threading.Event()
         self._scan_data: dict[str, dict[str, list[str]]] = {}
 
-        title = "Обработчик файлов _p и _t"
+        title = "Excel Pair Processor"
         if DRY_RUN:
             title += " [DRY-RUN]"
         if DEBUG_MODE:
