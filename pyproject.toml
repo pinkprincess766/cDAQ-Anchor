@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "excel-pair-processor"
+version = "0.1.0"
+description = "GUI tool for matching paired _p/_t Excel measurement files and exporting a combined result table."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Project contributors" },
+]
+keywords = ["excel", "pandas", "tkinter", "measurement", "data-processing"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: MacOS X",
+    "Environment :: Win32 (MS Windows)",
+    "Environment :: X11 Applications",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business",
+]
+dependencies = [
+    "pandas>=2.0",
+    "openpyxl>=3.1",
+    "xlrd>=2.0",
+    "pyxlsb>=1.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0",
+]
+
+[project.scripts]
+excel-pair-processor = "main:main"
+
+[tool.setuptools]
+py-modules = [
+    "config",
+    "excel_io",
+    "export_results",
+    "gui",
+    "logging_setup",
+    "main",
+    "matching",
+    "processing",
+    "start",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"
