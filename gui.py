@@ -27,6 +27,8 @@ from excel_io import scan_file
 from logging_setup import setup_logging
 from processing import ProcessingReport, discover_pairs, run_processing, validate_setup
 
+logger = logging.getLogger(__name__)
+
 
 class ColumnSelector(ttk.Frame):
     """Мультивыбор колонок: список + кнопки добавить/убрать."""
@@ -638,7 +640,7 @@ class App:
         def append() -> None:
             self.log_area.insert(tk.END, msg + "\n")
             self.log_area.see(tk.END)
-            logging.info(msg)
+            logger.info(msg)
 
         self.root.after(0, append)
 
