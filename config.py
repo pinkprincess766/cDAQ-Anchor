@@ -11,6 +11,8 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any, Literal
 
+logger = logging.getLogger(__name__)
+
 APP_NAME = "ExcelProcessor"
 
 DEBUG_MODE = "--debug" in sys.argv
@@ -108,7 +110,7 @@ def load_settings() -> dict[str, Any]:
         with open(SETTINGS_FILE, encoding="utf-8") as f:
             data = json.load(f)
     except Exception as exc:
-        logging.error("Ошибка загрузки настроек: %s", exc)
+        logger.error("Ошибка загрузки настроек: %s", exc)
         return default_settings()
 
     if "profiles" not in data:
@@ -127,7 +129,7 @@ def save_settings(settings: dict[str, Any]) -> None:
         with open(SETTINGS_FILE, "w", encoding="utf-8") as f:
             json.dump(settings, f, indent=4, ensure_ascii=False)
     except Exception as exc:
-        logging.error("Ошибка сохранения настроек: %s", exc)
+        logger.error("Ошибка сохранения настроек: %s", exc)
 
 
 def get_profiles(settings: dict[str, Any]) -> list[ProcessingProfile]:

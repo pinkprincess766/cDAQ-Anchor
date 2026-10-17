@@ -29,6 +29,8 @@ from matching import (
     parse_numeric_series,
 )
 
+logger = logging.getLogger(__name__)
+
 LogCallback = Callable[[str], None]
 ProgressCallback = Callable[[int, int, str], None]
 
@@ -481,7 +483,7 @@ def run_processing(
             f"Обработано: {len(results)}, пропущено: {skipped}, "
             f"время: {elapsed:.2f} сек"
         )
-        logging.info(
+        logger.info(
             "Обработка завершена: %s пар за %.2f сек", len(results), elapsed
         )
         path_strings = [str(p) for p in saved_paths]
@@ -500,7 +502,7 @@ def run_processing(
         )
     except Exception as exc:
         log_callback(f"Критическая ошибка: {exc}")
-        logging.error("Ошибка в run_processing", exc_info=True)
+        logger.exception("Ошибка в run_processing")
         done_callback(
             ProcessingReport(
                 False,

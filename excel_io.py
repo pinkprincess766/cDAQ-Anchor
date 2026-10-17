@@ -8,6 +8,8 @@ from typing import Any
 
 import pandas as pd
 
+logger = logging.getLogger(__name__)
+
 SUPPORTED_EXTENSIONS = {".xlsx", ".xls", ".xlsb"}
 
 
@@ -88,7 +90,7 @@ def read_selected_columns(
     dtype_dict: dict[str, Any] | None = None,
 ) -> pd.DataFrame:
     engine = get_engine(filepath)
-    logging.debug(
+    logger.debug(
         "Чтение %s, лист %s, колонки: %s", filepath.name, sheet, columns
     )
     return pd.read_excel(
