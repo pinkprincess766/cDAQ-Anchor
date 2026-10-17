@@ -14,6 +14,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from matching import (
     extract_datetime_from_basename,
+    extract_time_str,
     find_criterion_row,
     find_row_by_time,
     parse_numeric_series,
@@ -69,3 +70,53 @@ def test_extract_datetime_from_basename():
 def test_extract_datetime_invalid():
     with pytest.raises(ValueError):
         extract_datetime_from_basename("bad_name")
+
+def test_find_criterion_row_missing_column():
+    df = pd.DataFrame({"val": [1.0, 2.0]})
+    with pytest.raises(KeyError):
+        find_criterion_row(df, "absent", 1.0)
+
+
+def test_find_criterion_row_no_numeric_values():
+    df = pd.DataFrame({"val": ["abc", None]})
+    with pytest.raises(ValueError, match="не содержит числовых"):
+        find_criterion_row(df, "val", 1.0)
+
+
+def test_find_criterion_row_above_without_candidates():
+    df = pd.DataFrame({"val": [1.0, 2.0]})
+    with pytest.raises(ValueError, match=">="):
+        find_criterion_row(df, "val", 5.0, "above")
+
+
+def test_find_criterion_row_below_without_candidates():
+    df = pd.DataFrame({"val": [3.0, 4.0]})
+    with pytest.raises(ValueError, match="<="):
+        find_criterion_row(df, "val", 1.0, "below")
+
+
+def test_find_criterion_row_unknown_mode():
+    df = pd.DataFrame({"val": [1.0]})
+    with pytest.raises(ValueError, match="Неизвестный режим"):
+        find_criterion_row(df, "val", 1.0, "sideways")
+
+
+def test_find_criterion_row_skips_non_numeric_rows():
+    df = pd.DataFrame({"val": ["x", "4,5", "y", "4,0"]})
+    idx, _ = find_criterion_row(df, "val", 4.4)
+    assert idx == 1
+
+
+def test_find_row_by_time_missing_column_or_nan_target():
+    df = pd.DataFrame({"Time*": [0.1, 0.2]})
+    assert find_row_by_time(df, "absent", 0.1) is None
+    assert find_row_by_time(df, "Time*", float("nan")) is None
+
+
+def test_extract_time_str_from_six_digit_run():
+    assert extract_time_str(Path("26_06_2026_153045.xlsx")) == "15_30_45"
+
+
+def test_extract_time_str_without_time():
+    with pytest.raises(ValueError):
+        extract_time_str(Path("no_time_here.xlsx"))
