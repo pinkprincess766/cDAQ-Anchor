@@ -23,7 +23,7 @@ from config import (
     save_settings,
     set_active_profile,
 )
-from excel_io import SUPPORTED_EXTENSIONS, scan_file
+from excel_io import scan_file
 from logging_setup import setup_logging
 from processing import ProcessingReport, discover_pairs, run_processing, validate_setup
 
